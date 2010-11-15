@@ -906,11 +906,14 @@
 			{
 				for each (e in _remove)
 				{
-					if (e._added != true && _add.indexOf(e) >= 0)
+					// PATCH - 10-22-10-1
+					if (e._added != true && _add.indexOf(e) >= 0) 
 					{
 						_add.splice(_add.indexOf(e), 1);
 						continue;
 					}
+					// END PATCH
+					
 					e._added = false;
 					e.removed();
 					removeUpdate(e);

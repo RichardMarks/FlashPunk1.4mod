@@ -1,6 +1,5 @@
 ﻿package net.flashpunk
 {
-	import flash.display.BitmapData;
 	import flash.geom.Point;
 	
 	/**
@@ -68,7 +67,7 @@
 		 * @param	point		The position to draw the graphic.
 		 * @param	camera		The camera offset.
 		 */
-		public function render(target:BitmapData, point:Point, camera:Point):void
+		public function render(point:Point, camera:Point):void
 		{
 			
 		}
@@ -80,6 +79,5 @@
 		// Graphic information.
 		/** @private */ internal var _assign:Function;
 		/** @private */ internal var _scroll:Boolean = true;
-		/** @private */ protected var _point:Point = new Point;
 	}
 }

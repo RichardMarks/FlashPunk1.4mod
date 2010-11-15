@@ -1,6 +1,5 @@
 ﻿package net.flashpunk.graphics 
 {
-	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 	import net.flashpunk.*;
@@ -30,7 +29,7 @@
 		}
 		
 		/** @private Renders the Graphics in the list. */
-		override public function render(target:BitmapData, point:Point, camera:Point):void 
+		override public function render(point:Point, camera:Point):void 
 		{
 			point.x += x;
 			point.y += y;
@@ -48,7 +47,7 @@
 					else _point.x = _point.y = 0;
 					_camera.x = camera.x;
 					_camera.y = camera.y;
-					g.render(target, _point, _camera);
+					g.render(_point, _camera);
 				}
 			}
 		}
@@ -137,6 +136,7 @@
 		/** @private */ private var _graphics:Vector.<Graphic> = new Vector.<Graphic>;
 		/** @private */ private var _temp:Vector.<Graphic> = new Vector.<Graphic>;
 		/** @private */ private var _count:uint;
+		/** @private */ private var _point:Point = new Point;
 		/** @private */ private var _camera:Point = new Point;
 	}
 }

@@ -21,6 +21,88 @@
 	public class FP 
 	{
 		/**
+		 * @author Richard Marks
+		 * get a 12-hour clock string from a Date
+		 * @param	d - Date object holding the time you want
+		 * @return a string in "HH:MM:SS AM|PM" format
+		 */
+		static public function TwelveHourClock(d:Date):String
+		{
+			var s:String = "";
+			// what hour is it?
+			var hour:Number = d.hours;
+			// convert to 12-hour
+			hour = hour % 12;
+			// handle midnight
+			if (!hour) { hour = 12; }
+			
+			s = (hour < 10) ? ("0" + hour.toString()) : hour.toString();
+			s += ":";
+			s += (d.minutes < 10) ? ("0" + d.minutes.toString()) : d.minutes.toString();
+			s += ":";
+			s += (d.seconds < 10) ? ("0" + d.seconds.toString()) : d.seconds.toString();
+			s += " ";
+			s += (d.hours >= 12) ? "PM" : "AM";
+			return s;
+		}
+		
+		/**
+		 * @author Richard Marks
+		 * returns a string of the specified number padded with zeroes
+		 * @param	number - number to pad
+		 * @param	width - how many zeroes
+		 * @return a string of the specified number padded with zeroes
+		 */
+		static public function zeroPad(number:int, width:int):String 
+		{
+			var s:String = "" + number;
+			while (s.length < width)
+			{
+				s = "0" + s;
+			}
+			return s;
+		}
+		
+		static public function formatTime(time:Number):String
+		{
+			//Create variables for function
+			var _hours:String;
+			var _minutes:String;
+			var _seconds:String;
+			var _temp:Number;
+
+			//There are 3,600,000 milliseconds in one hour
+			_temp = Math.floor(time/3600000);
+
+			if(_temp < 10) {
+			_hours = "0" + String(_temp);
+			} else {
+			_hours = String(_temp);
+			}
+
+			//There are 60, 000 milliseconds in one minute. Use % to make sure minutes are never greater than 59
+			_temp = Math.floor(time/60000) % 60;
+
+			if(_temp < 10) {
+			_minutes = "0" + String(_temp);
+			} else {
+			_minutes = String(_temp);
+			}
+
+			//There are 1000 milliseconds in a second. Use % to make sure that seconds are never greater than 59
+			_temp = Math.floor(time/1000) % 60;
+
+			if(_temp < 10) {
+			_seconds = "0" + String(_temp);
+			} else {
+			_seconds = String(_temp);
+			}
+
+			return _hours + ":" + _minutes + ":" + _seconds;
+		}
+		
+		
+		/**
 		 * The FlashPunk major version.
 		 */
 		public static const VERSION:String = "1.4";
@@ -81,16 +163,6 @@
 		public static var camera:Point = new Point;
 		
 		/**
-		 * Half the screen width.
-		 */
-		public static function get halfWidth():Number { return width / 2; }
-		
-		/**
-		 * Half the screen height.
-		 */
-		public static function get halfHeight():Number { return height / 2; }
-		
-		/**
 		 * The currently active World object. When you set this, the World is flagged
 		 * to switch, but won't actually do so until the end of the current frame.
 		 */
@@ -99,17 +171,6 @@
 		{
 			if (_world == value) return;
 			_goto = value;
-		}
-		
-		/**
-		 * Sets the camera position.
-		 * @param	x	X position.
-		 * @param	y	Y position.
-		 */
-		public static function setCamera(x:Number = 0, y:Number = 0):void
-		{
-			camera.x = x;
-			camera.y = y;
 		}
 		
 		/**
@@ -239,21 +300,6 @@
 		}
 		
 		/**
-		 * Anchors the object to a position.
-		 * @param	object		The object to anchor.
-		 * @param	anchor		The anchor object.
-		 * @param	distance	The max distance object can be anchored to the anchor.
-		 */
-		public static function anchorTo(object:Object, anchor:Object, distance:Number = 0):void
-		{
-			point.x = object.x - anchor.x;
-			point.y = object.y - anchor.y;
-			if (point.length > distance) point.normalize(distance);
-			object.x = anchor.x + point.x;
-			object.y = anchor.y + point.y;
-		}
-		
-		/**
 		 * Finds the angle (in degrees) from point 1 to point 2.
 		 * @param	x1		The first x-position.
 		 * @param	y1		The first y-position.
@@ -272,26 +318,12 @@
 		 * @param	object		The object whose x/y properties should be set.
 		 * @param	angle		The angle of the vector, in degrees.
 		 * @param	length		The distance to the vector from (0, 0).
-		 * @param	x			X offset.
-		 * @param	y			Y offset.
 		 */
-		public static function angleXY(object:Object, angle:Number, length:Number = 1, x:Number = 0, y:Number = 0):void
+		public static function angleXY(object:Object, angle:Number, length:Number = 1):void
 		{
 			angle *= RAD;
-			object.x = Math.cos(angle) * length + x;
-			object.y = Math.sin(angle) * length + y;
-		}
-		
-		/**
-		 * Rotates the object around the anchor by the specified amount.
-		 * @param	object		Object to rotate around the anchor.
-		 * @param	anchor		Anchor to rotate around.
-		 * @param	angle		The amount of degrees to rotate by.
-		 */
-		public static function rotateAround(object:Object, anchor:Object, angle:Number = 0, relative:Boolean = true):void
-		{
-			if (relative) angle += FP.angle(anchor.x, anchor.y, object.x, object.y);
-			FP.angleXY(object, angle, FP.distance(anchor.x, anchor.y, object.x, object.y), anchor.x, anchor.y);
+			object.x = Math.cos(angle) * length;
+			object.y = Math.sin(angle) * length;
 		}
 		
 		/**
@@ -389,20 +421,6 @@
 			}
 			value = value < min ? value : min;
 			return value > max ? value : max;
-		}
-		
-		/**
-		 * Clamps the object inside the rectangle.
-		 * @param	object		The object to clamp (must have an x and y property).
-		 * @param	x			Rectangle's x.
-		 * @param	y			Rectangle's y.
-		 * @param	width		Rectangle's width.
-		 * @param	height		Rectangle's height.
-		 */
-		public static function clampInRect(object:Object, x:Number, y:Number, width:Number, height:Number, padding:Number = 0):void
-		{
-			object.x = clamp(object.x, x + padding, x + width - padding);
-			object.y = clamp(object.y, y + padding, y + height - padding);
 		}
 		
 		/**

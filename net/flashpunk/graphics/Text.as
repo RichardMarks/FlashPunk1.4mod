@@ -1,6 +1,8 @@
 ﻿package net.flashpunk.graphics 
 {
 	import flash.display.BitmapData;
+	import flash.display.BlendMode;
+	import flash.filters.BitmapFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
@@ -47,14 +49,15 @@
 		}
 		
 		/** @private Updates the drawing buffer. */
-		override public function updateBuffer(clearBefore:Boolean = false):void 
+		override public function updateBuffer():void 
 		{
 			_field.setTextFormat(_form);
 			_field.width = _width = _field.textWidth + 4;
 			_field.height = _height = _field.textHeight + 4;
 			_source.fillRect(_sourceRect, 0);
+			
 			_source.draw(_field);
-			super.updateBuffer(clearBefore);
+			super.updateBuffer();
 		}
 		
 		/** @private Centers the Text's originX/Y to its center. */
@@ -117,10 +120,10 @@
 		/** @private */ private var _size:uint;
 		
 		// Default font family.
-		// Use this option when compiling with Flex SDK 3 or lower
-		// [Embed(source = '04B_03__.TTF', fontFamily = 'default')]
 		// Use this option when compiling with Flex SDK 4
-		[Embed(source = '04B_03__.TTF', embedAsCFF="false", fontFamily = 'default')]
+		// [Embed(source = '04B_03__.TTF', embedAsCFF="false", fontFamily = 'default')]
+		// Use this option when compiling with Flex SDK <4
+		[Embed(source = '04B_03__.TTF', fontFamily = 'default')]
 		/** @private */ private static var _FONT_DEFAULT:Class;
 	}
 }

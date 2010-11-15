@@ -6,21 +6,6 @@
 	public class Tweener
 	{
 		/**
-		 * Persistent Tween type, will stop when it finishes.
-		 */
-		public const PERSIST:uint = 0;
-		
-		/**
-		 * Looping Tween type, will restart immediately when it finishes.
-		 */
-		public const LOOPING:uint = 1;
-		
-		/**
-		 * Oneshot Tween type, will stop and remove itself from its core container when it finishes.
-		 */
-		public const ONESHOT:uint = 2;
-		
-		/**
 		 * If the Tweener should update.
 		 */
 		public var active:Boolean = true;
@@ -55,7 +40,11 @@
 		 */
 		public function addTween(t:Tween, start:Boolean = false):Tween
 		{
-			if (t._parent) throw new Error("Cannot add a Tween object more than once.");
+			//if (t._parent) throw new Error("Cannot add a Tween object more than once.");
+			if (t._parent)
+			{
+				return null;
+			}
 			t._parent = this;
 			t._next = _tween;
 			if (_tween) _tween._prev = t;

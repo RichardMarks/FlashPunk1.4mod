@@ -218,6 +218,7 @@
 		private static function onKeyDown(e:KeyboardEvent = null):void
 		{
 			// get the keycode
+			
 			var code:int = lastKey = e.keyCode;
 			
 			// update the keystring
@@ -261,6 +262,7 @@
 				mouseDown = true;
 				mouseUp = false;
 				mousePressed = true;
+				mouseReleased = false;
 			}
 		}
 		
@@ -269,6 +271,7 @@
 		{
 			mouseDown = false;
 			mouseUp = true;
+			mousePressed = false;
 			mouseReleased = true;
 		}
 		
