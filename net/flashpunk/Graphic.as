@@ -1,5 +1,6 @@
 ﻿package net.flashpunk
 {
+	import flash.display.BitmapData;
 	import flash.geom.Point;
 	
 	/**

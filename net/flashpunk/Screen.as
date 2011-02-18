@@ -30,6 +30,42 @@
 			update();
 		}
 		
+		// Screen.as PATCH Richard Marks <ccpsceo@gmail.com> - Jan 07, 2011
+		/**
+		 * resizes the screen - updates FP dimension variables
+		 * you should not do this a lot, there will be lag.
+		 * @param	width new width of the screen
+		 * @param	height new height of the screen
+		 */
+		public function resize(width:uint, height:uint):void
+		{
+			// tell FP the screen size has changed
+			FP.width = width;
+			FP.height = height;
+			
+			// remove the old screen bitmap buffers
+			_sprite.removeChild(_bitmap[0]);
+			_sprite.removeChild(_bitmap[1]);
+			
+			// create new bitmap buffers
+			_bitmap[0] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
+			_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
+			
+			// add the new bitmap buffers 
+			_sprite.addChild(_bitmap[0]).visible = true;
+			_sprite.addChild(_bitmap[1]).visible = false;
+			
+			// tell FP to look at the new bitmap buffer
+			FP.buffer = _bitmap[0].bitmapData;
+			
+			// inform FP and the screen class about the size change
+			_width = FP.bounds.width = FP.width;
+			_height = FP.bounds.height = FP.height;
+			
+			// update
+			update();
+		}
+		
 		/**
 		 * Swaps screen buffers.
 		 */

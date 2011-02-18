@@ -2,7 +2,12 @@
 {
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
+	import flash.display.GraphicsPathCommand;
+	import flash.display.GraphicsPathWinding;
 	import flash.display.LineScaleMode;
+	import flash.display.Shader;
+	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -16,6 +21,67 @@
 	 */
 	public class Draw 
 	{
+		/// @author Thomas King
+		/**
+		 * Draws a polygon defined by the values in an Array
+		 * @param	points		Points of vertices
+		 * @param	color		Color of the polygon
+		 * @param	alpha		Alpha of the polygon
+		 * @param	filled		If the polygon should be filled or outline
+		 */
+		public static function polygon(points:Array, color:uint = 0xFFFFFF, alpha:Number = 1, filled:Boolean = true):void
+		{
+			//_graphics.clear();
+			//_graphics.lineStyle(1, color, alpha);
+			//_graphics.
+			
+			//_graphics.beginFill(color, alpha);
+			/*
+			_graphics.moveTo(points[0], points[1]);
+			for (var i:int = 2; i < points.length; i += 2) 
+			{
+				_graphics.lineTo(points[i], points[i + 1]);
+			}
+			_graphics.lineTo(points[0], points[1]);
+			*/
+			
+			var pathPoints:Vector.<Number> = new Vector.<Number>(points.length + 2);
+			var pathCommands:Vector.<int> = new Vector.<int>(int(points.length / 2) + 1);
+			
+			for (var i:Number = 0; i < points.length; i++)
+			{
+				pathPoints[i] = points[i];
+			}
+			pathPoints[pathPoints.length - 2] = points[0];
+			pathPoints[pathPoints.length - 1] = points[1];
+			
+			pathCommands[0] = GraphicsPathCommand.MOVE_TO;
+			for (var cmdIndex:Number = 1; cmdIndex < pathCommands.length; cmdIndex++)
+			{
+				pathCommands[cmdIndex] = GraphicsPathCommand.LINE_TO;
+				
+			}
+			
+			var poly:Shape = new Shape();
+			poly.graphics.lineStyle(1, color, alpha);
+			poly.graphics.beginFill(color, alpha);
+			//poly.graphics.drawPath(pathCommands, pathPoints, GraphicsPathWinding.NON_ZERO);
+			poly.graphics.drawRect(points[0], points[1], 64, 64);
+			poly.graphics.endFill();
+			FP.buffer.draw(poly, null, null, blend);
+			
+			//trace("path points:", pathPoints);
+			
+			//_graphics.drawPath(pathCommands, pathPoints, GraphicsPathWinding.NON_ZERO);
+			
+			//_graphics.drawCircle(points[0], points[1], 8);
+			
+			//_graphics.endFill();
+			
+			//_target.draw(FP.sprite, null, null, blend);
+		}
+		// end
+		
 		/**
 		 * The blending mode used by Draw functions. This will not
 		 * apply to Draw.line(), but will apply to Draw.linePlus().

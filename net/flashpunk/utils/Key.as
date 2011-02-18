@@ -5,6 +5,8 @@
 	 */
 	public class Key 
 	{
+		public static const TILDE:int = 192;
+		
 		public static const ANY:int = -1;
 		
 		public static const LEFT:int = 37;

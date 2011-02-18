@@ -84,11 +84,32 @@ package net.flashpunk.debug
 		 */
 		public function enable():void
 		{
+			// Console.as screen resize bug PATCH 
+			// Richard Marks <ccpsceo@gmail.com> - Jan 07, 2011
+			
 			// Quit if the console is already enabled.
-			if (_enabled) return;
+			if (_enabled) 
+			{
+				// no resize?
+				if (_back.width == width && _back.height == height)
+				{
+					// quit
+					return;
+				}
+				
+				// screen was resized, so we must re-enable the console.
+				for (var childIndex:Number = 0; childIndex <  _sprite.numChildren; childIndex++)
+				{
+					_sprite.removeChildAt(childIndex);
+					
+				}
+				FP.engine.removeChild(_sprite);
+				_sprite = new Sprite;
+			}
 			
 			// Enable it and add the Sprite to the stage.
 			_enabled = true;
+			
 			FP.engine.addChild(_sprite);
 			
 			// Used to determine some text sizing.
@@ -172,6 +193,8 @@ package net.flashpunk.debug
 			_logBarGlobal = _logBar.clone();
 			_logBarGlobal.y += 40;
 			_logLines = _logHeight / (big ? 16.5 : 8.5);
+			
+			//trace(_logReadText0.y, _logHeight);
 			
 			// The debug text.
 			_sprite.addChild(_debRead);

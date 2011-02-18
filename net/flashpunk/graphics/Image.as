@@ -260,6 +260,9 @@
 		 */
 		public function get height():uint { return _bufferRect.height; }
 		
+		public function get scaledWidth():uint { return _bufferRect.width * scaleX * scale; }
+		public function get scaledHeight():uint { return _bufferRect.height * scaleY * scale; }
+		
 		/**
 		 * Clipping rectangle for the image.
 		 */

@@ -39,7 +39,7 @@
 			if (_channel) stop();
 			_vol = _transform.volume = vol < 0 ? 0 : vol;
 			_pan = _transform.pan = pan < -1 ? -1 : (pan > 1 ? 1 : pan);
-			_channel = _sound.play(0, 0, _transform);
+			_channel = _sound.play(int(_sound.length *0.24), 0, _transform);
 			_channel.addEventListener(Event.SOUND_COMPLETE, onComplete);
 			_position = 0;
 			_looping = false;
