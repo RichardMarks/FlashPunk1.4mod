@@ -95,6 +95,7 @@
 		/** @private Updates the parent's bounds for this mask. */
 		override protected function update():void 
 		{
+			//trace("Hitbox.update()");
 			// update parent list
 			if (list) 
 			{
@@ -102,11 +103,17 @@
 			}
 			else
 			{
+				
 				// update entity bounds
-				parent.originX = -_x;
-				parent.originY = -_y;
-				parent.width = _width;
-				parent.height = _height;
+				try
+				{
+					parent.originX = -_x;
+					parent.originY = -_y;
+					parent.width = _width;
+					parent.height = _height;
+				}
+				catch (e:Error) { throw new Error("Hitbox.update() Error:"+e); }
+				
 			}
 		}
 		

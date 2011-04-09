@@ -68,7 +68,7 @@
 		/** @private Updates the parent's bounds for this mask. */
 		protected function update():void
 		{
-			
+			//trace("Mask.update()");
 		}
 		
 		// Mask information.

@@ -127,6 +127,7 @@
 		/** @private Updates the parent's bounds for this mask. */
 		override protected function update():void 
 		{
+			trace("Masklist.update()");
 			// find bounds of the contained masks
 			var t:int, l:int, r:int, b:int, h:Hitbox, i:int = _count;
 			while (i --)
@@ -145,16 +146,17 @@
 			_y = t;
 			_width = r - l;
 			_height = b - t;
-			super.update();
+			//super.update();
 		}
 		
 		override public function assignTo(parent:Entity):void 
 		{
 			for each(var m:Mask in _masks)
 			{
-				m.parent = parent;
+				m.assignTo(parent);
 			}
-			super.assignTo(parent);
+			if (!list && parent) update();
+			//super.assignTo(parent);
 		}
 		
 		/**
