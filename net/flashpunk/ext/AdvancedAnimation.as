@@ -97,6 +97,12 @@ package net.flashpunk.ext
 			return _seq;
 		}
 		
+		// added by Richard Marks
+		/**
+		 * The currently playing sequence.
+		 */
+		public function get currentSequence():String { return _seq ? _seq._name : ""; }
+		
 		// made protected just in case we want to extend this -Richard Marks
 		/** @private */ protected var _seqs:Object = { };
 		/** @private */ protected var _seq:AnimationSequence;
