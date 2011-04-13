@@ -146,7 +146,7 @@ package net.flashpunk.debug
 			_entRead.graphics.drawRoundRectComplex(0, 0, _entReadText.width, 20, 0, 0, 20, 0);
 			
 			// The FPS text.
-			_sprite.addChild(_fpsRead);
+			//_sprite.addChild(_fpsRead);
 			_fpsRead.addChild(_fpsReadText);
 			_fpsReadText.defaultTextFormat = format(16);
 			_fpsReadText.embedFonts = true;
@@ -161,7 +161,7 @@ package net.flashpunk.debug
 			_fpsRead.graphics.drawRoundRectComplex(0, 0, big ? 200 : 100, 20, 0, 0, 0, 20);
 			
 			// The frame timing text.
-			if (big) _sprite.addChild(_fpsInfo);
+			//if (big) _sprite.addChild(_fpsInfo);
 			_fpsInfo.addChild(_fpsInfoText0);
 			_fpsInfo.addChild(_fpsInfoText1);
 			_fpsInfoText0.defaultTextFormat = format(8, 0xAAAAAA);

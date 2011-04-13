@@ -725,6 +725,7 @@
 		public static function frames(from:int, to:int, skip:int = 0):Array
 		{
 			var a:Array = [];
+			/*
 			skip ++;
 			if (from < to)
 			{
@@ -741,6 +742,12 @@
 					a.push(from);
 					from -= skip;
 				}
+			}
+			*/
+			skip++;
+			for (var value:int = from; value <= to; value += skip)
+			{
+				a.push(value);
 			}
 			return a;
 		}

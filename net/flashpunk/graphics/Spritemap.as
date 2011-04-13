@@ -115,6 +115,11 @@
 			return _anims[name];
 		}
 		
+		public function hasAnim(name:String):Boolean
+		{
+			return (_anims[name] != null);
+		}
+		
 		/**
 		 * Plays an animation.
 		 * @param	name		Name of the animation to play.

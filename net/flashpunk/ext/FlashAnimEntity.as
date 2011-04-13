@@ -20,8 +20,17 @@ package net.flashpunk.ext
 			var entity:FlashAnimEntity = new FlashAnimEntity(xPos, yPos, layer, mask);
 			entity.flashGraphic = drawable;
 			entity.flashMC = MovieClip(drawable);
+			//entity.flashOffset.x = entity.flashMC.width * 0.5;
+			//entity.flashOffset.y = entity.flashMC.height * 0.5;
 			try
 			{
+				/*
+				trace("mc pos,size",
+					entity.flashMC.x,
+					entity.flashMC.y,
+					entity.flashMC.width,
+					entity.flashMC.height);
+					*/
 				FP.world.add(entity);
 			}
 			catch (e:Error)
@@ -59,10 +68,25 @@ package net.flashpunk.ext
 			height = flashMC.height;
 			myColorTransform.alphaMultiplier = flashAlpha;
 			
+			/*
 			myMatrix.identity();
 			myMatrix.rotate(0.0174532925 * flashAngle);
 			myMatrix.scale(flashScale, flashScale);
 			myMatrix.translate(x - FP.camera.x + flashOffset.x, y - FP.camera.y + flashOffset.y);
+			*/
+			myMatrix.b = myMatrix.c = 0;
+			myMatrix.a = flashMC.scaleX * flashScale;
+			myMatrix.d = flashMC.scaleY * flashScale;
+			myMatrix.tx = -flashOffset.x * myMatrix.a;
+			myMatrix.ty = -flashOffset.y * myMatrix.d;
+			if (flashAngle != 0)
+			{
+				myMatrix.rotate(0.0174532925 * flashAngle);
+			}
+			myMatrix.tx += (flashOffset.x + (x - FP.camera.x));
+			myMatrix.ty += (flashOffset.y + (y - FP.camera.y));
+			
+			//trace("matrix=",myMatrix);
 			FP.buffer.draw(flashGraphic, myMatrix, myColorTransform);
 		}
 	}
