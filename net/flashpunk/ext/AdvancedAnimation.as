@@ -75,7 +75,7 @@ package net.flashpunk.ext
 					throw new Error("Undefined animations in sequence.");
 				}
 			}
-			(_seqs[name] = new Sequence(name, animations, loop, (callback != null? callback : this.callback)))._parent = this;
+			(_seqs[name] = new AnimationSequence(name, animations, loop, (callback != null? callback : this.callback)))._parent = this;
 			return _seqs[name];
 		}
 		
