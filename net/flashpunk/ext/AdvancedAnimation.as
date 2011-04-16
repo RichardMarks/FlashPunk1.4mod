@@ -18,8 +18,10 @@ package net.flashpunk.ext
 		public function AdvancedAnimation(source:*, frameWidth:uint = 0, frameHeight:uint = 0, callback:Function = null) 
 		{
 			super(source, frameWidth, frameHeight, callback);
+			_updater = simpleUpdate;
 		}
 		
+		private var frameChanged:Boolean;
 		/** @private Updates the animation. */
 		override public function update():void 
 		{
@@ -27,22 +29,57 @@ package net.flashpunk.ext
 				super.update();
 				return;
 			}
+			
+			_updater();
+		}
+		
+		private function simpleUpdate():void
+		{
+			updateSequence();
+			playAnim(_seq.animations[_seqIndex]);
+			super.update();
+		}
+		
+		private function advancedUpdate():void
+		{
+			if (complete || frameChanged) {
+				checkCallbacks();
+				_seqFrame++;
+			}
+			updateSequence();
+			
+			playAnim(_seq.animations[_seqIndex]);
+			
+			var frameBefore:int = frame;
+			super.update();
+			frameChanged = frameBefore != frame;
+		}
+		
+		private function updateSequence():void
+		{
 			if (complete) {
 				_seqIndex++;
 				if (_seqIndex == _seq.animations.length) {
 					if (_seq.loop) {
-						_seqIndex = 0;
+						_seqIndex = _seqFrame = 0;
 					}
-					else _seqIndex--;
-					// fixed bug where the sequence callback is ignored -Richard Marks
-					if (_seq.callback != null)
-					{
-						_seq.callback();
+					else {
+						_seqIndex--;
 					}
 				}
 			}
-			playAnim(_seq.animations[_seqIndex]);
-			super.update();
+		}
+		
+		private function checkCallbacks():void
+		{
+			var next:AnimationCallback = _seq._callbacks[0];
+			if (next && next.frame == _seqFrame) {
+				_seq.callbacks.shift();
+				next.callback();
+				if (next.save) {
+					_seq.callbacks.push(next);
+				}
+			}
 		}
 		
 		private function playAnim(name:String):Anim
@@ -63,7 +100,7 @@ package net.flashpunk.ext
 		 * @param	loop		If the sequence should loop.
 		 * @return	A new Sequence object for the sequence.
 		 */
-		public function addSeq(name:String, animations:Array, loop:Boolean = true, callback:Function = null):AnimationSequence
+		public function addSeq(name:String, animations:Array, loop:Boolean = true):AnimationSequence
 		{
 			if (_seqs[name]) throw new Error("Cannot have multiple animations with the same name");
 			// changed to use hasAnim function from my branch - Richard Marks
@@ -75,8 +112,14 @@ package net.flashpunk.ext
 					throw new Error("Undefined animations in sequence.");
 				}
 			}
-			(_seqs[name] = new AnimationSequence(name, animations, loop, (callback != null? callback : this.callback)))._parent = this;
+			(_seqs[name] = new AnimationSequence(name, animations, loop))._parent = this;
 			return _seqs[name];
+		}
+		
+		public function addCallback(name:String, callback:Function, frame:int, save:Boolean = true):void
+		{
+			_seqs[name].addCallback(callback, frame, save);
+			_updater = advancedUpdate;
 		}
 		
 		/**
@@ -93,8 +136,7 @@ package net.flashpunk.ext
 			{
 				return null;
 			}
-			// bugfix - reset sequence index
-			_seqIndex = 0;
+			_seqIndex = _seqFrame = 0;
 			playAnim(_seq.animations[0]);
 			return _seq;
 		}
@@ -109,6 +151,8 @@ package net.flashpunk.ext
 		/** @private */ protected var _seqs:Object = { };
 		/** @private */ protected var _seq:AnimationSequence;
 		/** @private */ protected var _seqIndex:uint;
+		/** @private */ protected var _seqFrame:uint;
+		/** @private */ protected var _updater:Function;
 	}
 
 }
