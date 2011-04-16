@@ -449,7 +449,7 @@
 		}
 		
 		/**
-		 * Center's the Entity's origin (half width & height).
+		 * Center's the Entity's origin (half width and height).
 		 */
 		public function centerOrigin():void
 		{

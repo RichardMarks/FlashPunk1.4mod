@@ -5,14 +5,12 @@ package net.flashpunk.debug
 	import flash.display.BlendMode;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
-	import flash.display.Stage;
 	import flash.geom.ColorTransform;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
-	import net.flashpunk.utils.Draw;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	

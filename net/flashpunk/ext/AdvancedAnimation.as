@@ -93,6 +93,8 @@ package net.flashpunk.ext
 			{
 				return null;
 			}
+			// bugfix - reset sequence index
+			_seqIndex = 0;
 			playAnim(_seq.animations[0]);
 			return _seq;
 		}
