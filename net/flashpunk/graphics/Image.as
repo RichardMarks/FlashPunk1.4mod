@@ -97,17 +97,34 @@
 		/** @private Renders the image. */
 		override public function render(point:Point, camera:Point):void 
 		{
+			renderToBitmap(null, point, camera);
+		}
+		
+		protected var myRenderPoint:Point = new Point;
+		public function renderToBitmap(target:BitmapData, point:Point, camera:Point):void
+		{
 			// quit if no graphic is assigned
-			if (!_buffer) return;
+			if (!_buffer) 
+			{
+				return;
+			}
+			
+			// if no target, assume FP.buffer
+			if (target == null)
+			{
+				target = FP.buffer;
+			}
 			
 			// determine drawing location
-			point.x += x - camera.x * scrollX;
-			point.y += y - camera.y * scrollY;
+			myRenderPoint.subtract(myRenderPoint);
+			myRenderPoint.add(point);
+			myRenderPoint.x += x - camera.x * scrollX;
+			myRenderPoint.y += y - camera.y * scrollY;
 			
 			// render without transformation
 			if (angle == 0 && scaleX * scale == 1 && scaleY * scale == 1 && !blend)
 			{
-				FP.buffer.copyPixels(_buffer, _bufferRect, point, null, null, true);
+				target.copyPixels(_buffer, _bufferRect, myRenderPoint, null, null, true);
 				return;
 			}
 			
@@ -117,10 +134,16 @@
 			_matrix.d = scaleY * scale;
 			_matrix.tx = -originX * _matrix.a;
 			_matrix.ty = -originY * _matrix.d;
-			if (angle != 0) _matrix.rotate(angle * FP.RAD);
-			_matrix.tx += originX + point.x;
-			_matrix.ty += originY + point.y;
-			FP.buffer.draw(_buffer, _matrix, null, blend, null, smooth);
+			
+			if (angle != 0) 
+			{
+				_matrix.rotate(angle * FP.RAD);
+			}
+			
+			_matrix.tx += originX + myRenderPoint.x;
+			_matrix.ty += originY + myRenderPoint.y;
+			
+			target.draw(_buffer, _matrix, null, blend, null, smooth);
 		}
 		
 		/**
