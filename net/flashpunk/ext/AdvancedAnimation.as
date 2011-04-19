@@ -62,39 +62,15 @@ package net.flashpunk.ext
 			// if the current animation has not finished
 			if (!complete) { return; }
 			
-			// advance the sequence
-			if (++_sequenceIndex < _sequence.animations.length)
-			{
-				trace("[" + _sequence.name + "] advancing sequence index to", _sequenceIndex);
-				return;
-			}
-			
-			// if the sequence does not loop
-			if (!_sequence.loop)
-			{
-				return;
-			}
-			
-			// reset the sequence
-			complete = false;
-			_sequenceIndex = _sequenceFrame = 0;
-			playAnim(_sequence.animations[0]);
-			
-			trace("replaying sequence", _sequence.name);
-			
-			/*
-			if (complete) {
-				_sequenceIndex++;
-				if (_sequenceIndex == _sequence.animations.length) {
-					if (_sequence.loop) {
-						_sequenceIndex = _sequenceFrame = 0;
-					}
-					else {
-						_sequenceIndex--;
-					}
+			_sequenceIndex++;
+			if (_sequenceIndex == _sequence.animations.length) {
+				if (_sequence.loop) {
+					_sequenceIndex = _sequenceFrame = 0;
+				}
+				else {
+					_sequenceIndex--;
 				}
 			}
-			*/
 		}
 		
 		private function checkCallbacks():void
@@ -111,7 +87,7 @@ package net.flashpunk.ext
 		
 		private function playAnim(name:String):Anim
 		{
-			return super.play(name, true);
+			return super.play(name, false);
 		}
 		
 		override public function play(name:String = "", reset:Boolean = false):Anim 
@@ -130,6 +106,7 @@ package net.flashpunk.ext
 		public function addSeq(name:String, animations:Array, loop:Boolean = true):AnimationSequence
 		{
 			if (_sequences[name]) throw new Error("Cannot have multiple animations with the same name");
+			
 			// changed to use hasAnim function from my branch - Richard Marks
 			for each (var anims:String in animations)
 			{
@@ -139,8 +116,26 @@ package net.flashpunk.ext
 					throw new Error("Undefined animations in sequence.");
 				}
 			}
+			
+			animations = addSequenceHACK(name, animations);
+			
 			(_sequences[name] = new AnimationSequence(name, animations, loop))._parent = this;
 			return _sequences[name];
+		}
+		
+		// for the love of god, we've got to find a better solution
+		private function addSequenceHACK(name:String, animations:Array):Array
+		{
+			// this hack adds a second animation to the sequence if only one anim is given
+			// the added animation is the last frame of the given animation
+			// the added animation name is name_DIRTY_HACK_
+			
+			if (animations.length > 1) { return animations; }
+			
+			var anim:Anim = Anim(_anims[animations[0]]);
+			add(name + "_DIRTY_HACK_", [anim.frames[anim.frames.length - 1]], anim.frameRate, false);
+			animations.push(name + "_DIRTY_HACK_");
+			return animations;
 		}
 		 
 		public function addCallback(name:String, callback:Function, frame:int, save:Boolean = true):void

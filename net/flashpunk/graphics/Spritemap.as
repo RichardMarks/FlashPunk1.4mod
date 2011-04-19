@@ -235,8 +235,8 @@
 		/** @private */ private var _columns:uint;
 		/** @private */ private var _rows:uint;
 		/** @private */ private var _frameCount:uint;
-		/** @private */ private var _anims:Object = { };
-		/** @private */ private var _anim:Anim;
+		/** @private */ protected var _anims:Object = { };
+		/** @private */ protected var _anim:Anim;
 		/** @private */ private var _index:uint;
 		/** @private */ protected var _frame:uint;
 		/** @private */ private var _timer:Number = 0;
