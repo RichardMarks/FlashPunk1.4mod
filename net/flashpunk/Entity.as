@@ -120,6 +120,21 @@
 		}
 		
 		/**
+		 * safely removes the Entity from its world
+		 */
+		public function removeMe():void
+		{
+			try
+			{
+				_world.remove(this);
+			}
+			catch (err:Error)
+			{
+				
+			}
+		}
+		
+		/**
 		 * Checks for a collision against an Entity type.
 		 * @param	type		The Entity type to check for.
 		 * @param	x			Virtual x position to place this Entity.
