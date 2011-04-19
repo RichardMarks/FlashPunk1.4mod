@@ -20,6 +20,10 @@
 	 */
 	public class FP 
 	{
+		static public function mouseInsideRectangle(rect:Rectangle):Boolean
+		{
+			return (screen.mouseX >= rect.left && screen.mouseX <= rect.right && screen.mouseY >= rect.top && screen.mouseY <= rect.bottom);
+		}
 		/**
 		 * @author Richard Marks
 		 * get a 12-hour clock string from a Date

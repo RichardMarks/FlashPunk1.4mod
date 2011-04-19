@@ -116,8 +116,8 @@
 			}
 			
 			// determine drawing location
-			myRenderPoint.subtract(myRenderPoint);
-			myRenderPoint.add(point);
+			myRenderPoint = myRenderPoint.subtract(myRenderPoint);
+			myRenderPoint = myRenderPoint.add(point);
 			myRenderPoint.x += x - camera.x * scrollX;
 			myRenderPoint.y += y - camera.y * scrollY;
 			

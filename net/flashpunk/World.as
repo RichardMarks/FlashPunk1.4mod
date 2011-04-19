@@ -836,6 +836,29 @@
 		}
 		
 		/**
+		 * Pushes all Entities in the World of the types into an Array.
+		 * @param	types Array of String types for Entities with which to populate the returned array.
+		 * @return  an Array containing all Entities requested
+		 */
+		public function getTypes(types:Array):Array
+		{
+			var result:Array = [], e:Entity, n:uint;
+			
+			for each(var type:String in types)
+			{
+				e = _typeFirst[type];
+				n = result.length;
+				while (e)
+				{
+					result[n ++] = e;
+					e = e._typeNext;
+				}
+			}
+			
+			return result;
+		}
+		
+		/**
 		 * Pushes all Entities in the World of the Class into the Array or Vector.
 		 * @param	c			The Class type to check.
 		 * @param	into		The Array or Vector to populate.
