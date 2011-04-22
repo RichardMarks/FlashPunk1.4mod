@@ -75,13 +75,19 @@ package net.flashpunk.ext
 		
 		private function checkCallbacks():void
 		{
+			if (_sequence._callbacks.length == 0) { trace("no callbacks!"); return; }
+			
 			var next:AnimationCallback = _sequence._callbacks[0];
 			if (next && next.frame == _sequenceFrame) {
+				trace("callbacks before shift", _sequence._callbacks);
 				_sequence.callbacks.shift();
+				trace("callbacks after shift", _sequence._callbacks);
 				next.callback();
 				if (next.save) {
+					trace("callback should be saved");
 					_sequence.callbacks.push(next);
 				}
+				trace("callbacks at end of checkCallbacks()", _sequence._callbacks);
 			}
 		}
 		
@@ -156,6 +162,8 @@ package net.flashpunk.ext
 			_sequence = _sequences[name];
 			if (!_sequence)
 			{
+				// seq change bugfix - Richard Marks
+				_sequenceIndex = _sequenceFrame = 0;
 				return null;
 			}
 			_sequenceIndex = _sequenceFrame = 0;
