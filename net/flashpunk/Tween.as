@@ -74,6 +74,24 @@
 			active = true;
 		}
 		
+		public function stop():void
+		{
+			_t = 1;
+			_finish = true;
+			active = false;
+		}
+		
+		public function pause():void
+		{
+			active = false;
+		}
+		
+		public function resume():void
+		{
+			active = true;
+		}
+		
+		
 		/** @private Called when the Tween completes. */
 		internal function finish():void
 		{

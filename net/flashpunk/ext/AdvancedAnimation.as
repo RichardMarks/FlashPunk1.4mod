@@ -1,7 +1,6 @@
 package net.flashpunk.ext
 {
-	import net.flashpunk.graphics.Anim;
-	import net.flashpunk.graphics.Spritemap;
+	import net.flashpunk.graphics.*;
 	/**
 	 * ...
 	 * @author Thomas King, Richard Marks
@@ -24,7 +23,7 @@ package net.flashpunk.ext
 		/** @private Updates the animation. */
 		override public function update():void 
 		{
-			if (!_sequence) 
+			if (_sequence === null) 
 			{
 				super.update();
 				return;
@@ -48,6 +47,8 @@ package net.flashpunk.ext
 			}
 			updateSequence();
 			
+			// bugfix for null sequence during a sequence -- how it becomes null I have NO idea.
+			if (!_sequence) { trace("sequence is null in advancedUpdate() on _sequenceFrame", _sequenceFrame); return; }
 			playAnim(_sequence.animations[_sequenceIndex]);
 			
 			var frameBefore:int = frame;
@@ -76,24 +77,6 @@ package net.flashpunk.ext
 		private function checkCallbacks():void
 		{
 			_sequence.updateCallbacks(_sequenceFrame);
-		}
-		
-		private function deprecated_checkCallbacks():void
-		{
-			if (!_sequence.hasCallbacks) { trace(this, "no callbacks!"); return; }
-			
-			var next:AnimationCallback = _sequence._callbacks[0];
-			if (next && next.frame == _sequenceFrame) {
-				trace(this, "callbacks before shift", _sequence._callbacks);
-				_sequence.callbacks.shift();
-				trace(this, "callbacks after shift", _sequence._callbacks);
-				next.callback();
-				if (next.save) {
-					trace(this, "callback should be saved");
-					_sequence.callbacks.push(next);
-				}
-				trace(this, "callbacks at end of checkCallbacks()", _sequence._callbacks);
-			}
 		}
 		
 		private function playAnim(name:String):Anim
@@ -189,7 +172,7 @@ package net.flashpunk.ext
 		/** @private */ protected var _sequenceIndex:uint;
 		/** @private */ protected var _sequenceFrame:uint;
 		/** @private */ protected var _updater:Function;
-		
+
 		public function toString():String
 		{
 			return "AdvancedAnimation {\n" +
