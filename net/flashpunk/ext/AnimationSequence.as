@@ -1,5 +1,6 @@
 package net.flashpunk.ext
 {
+	import adobe.utils.CustomActions;
 	/**
 	 * ...
 	 * @author Thomas King
@@ -16,10 +17,10 @@ package net.flashpunk.ext
 		public function AnimationSequence(name:String, animations:Array, loop:Boolean = true) 
 		{
 			_name = name;
-			_animations = animations;
+			_animations = Vector.<String>(animations);
 			_loop = loop;
 			_animCount = animations.length;
-			_callbacks = new Array();
+			_callbacks = new Vector.<AnimationCallback>();
 		}
 		
 		/**
@@ -36,6 +37,31 @@ package net.flashpunk.ext
 			_callbacks.push(new AnimationCallback(callback, frame, save));
 		}
 		
+		public function updateCallbacks(sequenceFrame:int):void
+		{
+			if (!hasCallbacks)
+			{
+				//trace("sequence", _name, "has no callbacks");
+				return;
+			}
+			
+			for each(var cb:AnimationCallback in _callbacks)
+			{
+				cb.update(sequenceFrame);
+			}
+			_callbacks = _callbacks.filter(removeDirtyCallbacks);
+		}
+		
+		private function removeDirtyCallbacks(cb:AnimationCallback, pos:int, callbacks:Vector.<AnimationCallback>):Boolean
+		{
+			return !cb.dirty;
+		}
+		
+		/**
+		 * if callbacks have been added to the sequence
+		 */
+		public function get hasCallbacks():Boolean { return _callbacks.length > 0; }
+		
 		/**
 		 * Name of the sequence.
 		 */
@@ -44,7 +70,7 @@ package net.flashpunk.ext
 		/**
 		 * Array of animations in the sequence.
 		 */
-		public function get animations():Array { return _animations; }
+		public function get animations():Vector.<String> { return _animations; }
 		
 		/**
 		 * Amount of frames in the sequence.
@@ -59,13 +85,13 @@ package net.flashpunk.ext
 		/**
 		 * Function called when sequence is complete
 		 */
-		public function get callbacks():Array { return _callbacks; }
+		public function get callbacks():Vector.<AnimationCallback> { return _callbacks; }
 		
 		/** @private */ internal var _parent:AdvancedAnimation;
 		/** @private */ internal var _name:String;
-		/** @private */ internal var _animations:Array;
+		/** @private */ internal var _animations:Vector.<String>;
 		/** @private */ internal var _animCount:uint;
 		/** @private */ internal var _loop:Boolean;
-		/** @private */ internal var _callbacks:Array;
+		/** @private */ internal var _callbacks:Vector.<AnimationCallback>;
 	}
 }

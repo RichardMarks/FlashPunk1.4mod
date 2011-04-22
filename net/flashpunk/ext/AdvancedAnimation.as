@@ -4,7 +4,7 @@ package net.flashpunk.ext
 	import net.flashpunk.graphics.Spritemap;
 	/**
 	 * ...
-	 * @author Thomas King
+	 * @author Thomas King, Richard Marks
 	 */
 	public class AdvancedAnimation extends Spritemap
 	{
@@ -21,11 +21,11 @@ package net.flashpunk.ext
 			_updater = simpleUpdate;
 		}
 		
-		private var frameChanged:Boolean;
 		/** @private Updates the animation. */
 		override public function update():void 
 		{
-			if (!_sequence) {
+			if (!_sequence) 
+			{
 				super.update();
 				return;
 			}
@@ -42,9 +42,9 @@ package net.flashpunk.ext
 		
 		private function advancedUpdate():void
 		{
-			if (complete || frameChanged) {
-				checkCallbacks();
+			if (complete || _frameChanged) {
 				_sequenceFrame++;
+				checkCallbacks();
 			}
 			updateSequence();
 			
@@ -52,7 +52,7 @@ package net.flashpunk.ext
 			
 			var frameBefore:int = frame;
 			super.update();
-			frameChanged = frameBefore != frame;
+			_frameChanged = frameBefore != frame;
 		}
 		
 		private function updateSequence():void
@@ -75,19 +75,24 @@ package net.flashpunk.ext
 		
 		private function checkCallbacks():void
 		{
-			if (_sequence._callbacks.length == 0) { trace("no callbacks!"); return; }
+			_sequence.updateCallbacks(_sequenceFrame);
+		}
+		
+		private function deprecated_checkCallbacks():void
+		{
+			if (!_sequence.hasCallbacks) { trace(this, "no callbacks!"); return; }
 			
 			var next:AnimationCallback = _sequence._callbacks[0];
 			if (next && next.frame == _sequenceFrame) {
-				trace("callbacks before shift", _sequence._callbacks);
+				trace(this, "callbacks before shift", _sequence._callbacks);
 				_sequence.callbacks.shift();
-				trace("callbacks after shift", _sequence._callbacks);
+				trace(this, "callbacks after shift", _sequence._callbacks);
 				next.callback();
 				if (next.save) {
-					trace("callback should be saved");
+					trace(this, "callback should be saved");
 					_sequence.callbacks.push(next);
 				}
-				trace("callbacks at end of checkCallbacks()", _sequence._callbacks);
+				trace(this, "callbacks at end of checkCallbacks()", _sequence._callbacks);
 			}
 		}
 		
@@ -111,7 +116,7 @@ package net.flashpunk.ext
 		 */
 		public function addSeq(name:String, animations:Array, loop:Boolean = true):AnimationSequence
 		{
-			if (_sequences[name]) throw new Error("Cannot have multiple animations with the same name");
+			if (_sequences[name]) throw new Error("Cannot have multiple sequences with the same name");
 			
 			// changed to use hasAnim function from my branch - Richard Marks
 			for each (var anims:String in animations)
@@ -178,11 +183,19 @@ package net.flashpunk.ext
 		public function get currentSequence():String { return _sequence ? _sequence._name : ""; }
 		
 		// made protected just in case we want to extend this -Richard Marks
+		/** @private */ protected var _frameChanged:Boolean;
 		/** @private */ protected var _sequences:Object = { };
 		/** @private */ protected var _sequence:AnimationSequence;
 		/** @private */ protected var _sequenceIndex:uint;
 		/** @private */ protected var _sequenceFrame:uint;
 		/** @private */ protected var _updater:Function;
+		
+		public function toString():String
+		{
+			return "AdvancedAnimation {\n" +
+				"\tupdate method: " + ((_updater === simpleUpdate)? "SIMPLE" : "ADVANCED") + "\n" +
+				"\tsequence index: " + _sequenceIndex + "\n" +
+				"\tsequence frame: " + _sequenceFrame + "\n};\n";
+		}
 	}
-
 }
