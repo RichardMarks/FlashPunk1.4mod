@@ -46,6 +46,22 @@ package net.flashpunk.ext
 			onClick = clickHandler;
 		}
 		
+		public function disable():void 
+		{
+			if (!active) { return; }
+			active = false;
+			var darken:Image = Image.createRect(width, height, 0xFF797979);
+			darken.alpha = 0.8;
+			myGfx.add(darken);
+		}
+		
+		public function enable():void 
+		{
+			if (active) { return; }
+			active = true;
+			myGfx.removeAt(2);
+		}
+		
 		override public function update():void 
 		{
 			if (onClick == null)
