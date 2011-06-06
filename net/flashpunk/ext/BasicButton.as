@@ -1,11 +1,8 @@
 package net.flashpunk.ext 
 {
-	import net.flashpunk.Entity;
-	import net.flashpunk.FP;
-	import net.flashpunk.graphics.Graphiclist;
-	import net.flashpunk.graphics.Image;
-	import net.flashpunk.graphics.Text;
-	import net.flashpunk.utils.Input;
+	import net.flashpunk.*;
+	import net.flashpunk.graphics.*;
+	import net.flashpunk.utils.*;
 	
 	/**
 	 * ...

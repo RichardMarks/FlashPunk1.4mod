@@ -846,6 +846,8 @@
 			
 			for each(var type:String in types)
 			{
+				getType(type, result);
+				/*
 				e = _typeFirst[type];
 				n = result.length;
 				while (e)
@@ -853,6 +855,7 @@
 					result[n ++] = e;
 					e = e._typeNext;
 				}
+				*/
 			}
 			
 			return result;

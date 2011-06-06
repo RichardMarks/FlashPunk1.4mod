@@ -60,6 +60,7 @@
 		 */
 		public function removeTween(t:Tween):Tween
 		{
+			if (!t || !t._parent) { return null; } // no crashing for bad tween management - RMarks
 			if (t._parent != this) throw new Error("Core object does not contain Tween.");
 			if (t._next) t._next._prev = t._prev;
 			if (t._prev) t._prev._next = t._next;
