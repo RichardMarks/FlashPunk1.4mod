@@ -1,5 +1,7 @@
 package net.flashpunk.ext
 {
+	import flash.filters.BitmapFilterQuality;
+	import flash.filters.GlowFilter;
 	import net.flashpunk.*;
 	import net.flashpunk.graphics.*;
 	import net.flashpunk.utils.*;
@@ -43,6 +45,13 @@ package net.flashpunk.ext
 			centerOrigin();
 			
 			onClick = clickHandler;
+		}
+		
+		public function addGlow(color:uint):void
+		{
+			myText.field.filters = [new GlowFilter(color, 0.7, 4, 4, 8, BitmapFilterQuality.MEDIUM, false, false)];
+			myText.clear();
+			myText.updateBuffer();
 		}
 		
 		public function disable():void 

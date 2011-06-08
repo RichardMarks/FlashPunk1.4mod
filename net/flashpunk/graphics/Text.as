@@ -119,6 +119,11 @@
 		/** @private */ private var _font:String;
 		/** @private */ private var _size:uint;
 		
+		/**
+		 * get the TextField for the Text object
+		 */
+		public function get field():TextField { return _field; }
+		
 		// Default font family.
 		// Use this option when compiling with Flex SDK 4
 		// [Embed(source = '04B_03__.TTF', embedAsCFF="false", fontFamily = 'default')]
