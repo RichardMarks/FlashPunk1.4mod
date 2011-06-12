@@ -10,9 +10,9 @@ package net.flashpunk.ext
 	 */
 	public class BasicButton extends Entity 
 	{
-		private var onClick:Function;
-		private var myText:Text;
-		private var myGfx:Graphiclist;
+		protected var onClick:Function;
+		protected var myText:Text;
+		protected var myGfx:Graphiclist;
 		
 		public function BasicButton(caption:String, clickHandler:Function = null, xPos:Number = 0, yPos:Number = 0, width:int = 0, height:int = 0, bgColor:uint = 0xFF007400, fgColor:uint = 0xFFFFFFFF) 
 		{
