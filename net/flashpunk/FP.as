@@ -191,7 +191,9 @@
 		public static function get volume():Number { return _volume; }
 		public static function set volume(value:Number):void
 		{
-			if (value < 0) value = 0;
+			//if (value < 0) value = 0;
+			// ensure volume is always 0 - 1
+			value = (value < 0) ? 0.0 : ((value > 1.0) ? 1.0 : value);
 			if (_volume == value) return;
 			_soundTransform.volume = _volume = value;
 			SoundMixer.soundTransform = _soundTransform;
