@@ -1,6 +1,7 @@
 package net.flashpunk.ext
 {
 	import flash.filters.BitmapFilterQuality;
+	import flash.filters.BlurFilter;
 	import flash.filters.GlowFilter;
 	import net.flashpunk.*;
 	import net.flashpunk.graphics.*;
@@ -52,6 +53,24 @@ package net.flashpunk.ext
 			myText.field.filters = [new GlowFilter(color, 0.7, 4, 4, 8, BitmapFilterQuality.MEDIUM, false, false)];
 			myText.clear();
 			myText.updateBuffer();
+		}
+		
+		public function addBloom(color:uint):void
+		{
+			var bloomText:Text = new Text(myText.text);
+			bloomText.size = myText.size;
+			bloomText.field.filters = [new BlurFilter, new GlowFilter(color)];
+			bloomText.clear();
+			bloomText.updateBuffer();
+			bloomText.x = int((width - bloomText.width) * 0.5);
+			bloomText.y = int((height - bloomText.height) * 0.5);
+			myText.field.filters = [];
+			myText.clear();
+			myText.updateBuffer();
+			myGfx = new Graphiclist(bloomText, myText);
+			myGfx.x -= width * 0.5;
+			myGfx.y -= height * 0.5;
+			graphic = myGfx;
 		}
 		
 		public function disable():void 

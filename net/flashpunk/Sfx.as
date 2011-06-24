@@ -53,6 +53,8 @@
 		 */
 		public function loop(vol:Number = 1, pan:Number = 0):void
 		{
+			play(vol, pan); _looping = true;
+			/*
 			if (_channel) stop();
 			_vol = _transform.volume = vol < 0 ? 0 : vol;
 			_pan = _transform.pan = pan < -1 ? -1 : (pan > 1 ? 1 : pan);
@@ -61,6 +63,7 @@
 			_channel.addEventListener(Event.SOUND_COMPLETE, onComplete);
 			_position = 0;
 			_looping = true;
+			*/
 		}
 		
 		/**

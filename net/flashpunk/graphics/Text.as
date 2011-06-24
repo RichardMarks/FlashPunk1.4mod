@@ -36,6 +36,8 @@
 		 */
 		public function Text(text:String, x:Number = 0, y:Number = 0, width:uint = 0, height:uint = 0)
 		{
+			// bugfix - _size never set initially, so called to .size were always 0
+			_size = Text.size;
 			_field.embedFonts = true;
 			_field.defaultTextFormat = _form = new TextFormat(Text.font, Text.size, 0xFFFFFF);
 			_field.text = _text = text;
