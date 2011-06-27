@@ -1,12 +1,7 @@
 ﻿package net.flashpunk
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.PixelSnapping;
-	import flash.display.Sprite;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Transform;
+	import flash.display.*;
+	import flash.geom.*;
 	
 	/**
 	 * Container for the main screen buffer. Can be used to transform the screen.
@@ -19,12 +14,12 @@
 		public function Screen() 
 		{
 			// create screen buffers
-			_bitmap[0] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
-			_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
+			_bitmap = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
+			//_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
 			FP.engine.addChild(_sprite);
-			_sprite.addChild(_bitmap[0]).visible = true;
-			_sprite.addChild(_bitmap[1]).visible = false;
-			FP.buffer = _bitmap[0].bitmapData;
+			_sprite.addChild(_bitmap).visible = true;
+			//_sprite.addChild(_bitmap[1]).visible = false;
+			FP.buffer = _bitmap.bitmapData;//[0].bitmapData;
 			_width = FP.width;
 			_height = FP.height;
 			update();
@@ -44,19 +39,19 @@
 			FP.height = height;
 			
 			// remove the old screen bitmap buffers
-			_sprite.removeChild(_bitmap[0]);
-			_sprite.removeChild(_bitmap[1]);
+			_sprite.removeChild(_bitmap);
+			//_sprite.removeChild(_bitmap[1]);
 			
 			// create new bitmap buffers
-			_bitmap[0] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
-			_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
+			_bitmap = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
+			//_bitmap[1] = new Bitmap(new BitmapData(FP.width, FP.height, false, 0), PixelSnapping.NEVER);
 			
 			// add the new bitmap buffers 
-			_sprite.addChild(_bitmap[0]).visible = true;
-			_sprite.addChild(_bitmap[1]).visible = false;
+			_sprite.addChild(_bitmap).visible = true;
+			//_sprite.addChild(_bitmap[1]).visible = false;
 			
 			// tell FP to look at the new bitmap buffer
-			FP.buffer = _bitmap[0].bitmapData;
+			FP.buffer = _bitmap.bitmapData;// [0].bitmapData;
 			
 			// inform FP and the screen class about the size change
 			_width = FP.bounds.width = FP.width;
@@ -71,8 +66,8 @@
 		 */
 		public function swap():void
 		{
-			_current = 1 - _current;
-			FP.buffer = _bitmap[_current].bitmapData;
+			//_current = 1 - _current;
+			//FP.buffer = _bitmap[_current].bitmapData;
 		}
 		
 		/**
@@ -90,8 +85,8 @@
 		public function redraw():void
 		{
 			// refresh the buffers
-			_bitmap[_current].visible = true;
-			_bitmap[1 - _current].visible = false;
+			//_bitmap[_current].visible = true;
+			//_bitmap[1 - _current].visible = false;
 		}
 		
 		/** @private Re-applies transformation matrix. */
@@ -206,8 +201,8 @@
 		/**
 		 * Whether screen smoothing should be used or not.
 		 */
-		public function get smoothing():Boolean { return _bitmap[0].smoothing; }
-		public function set smoothing(value:Boolean):void { _bitmap[0].smoothing = _bitmap[1].smoothing = value; }
+		public function get smoothing():Boolean { return _bitmap.smoothing; }
+		public function set smoothing(value:Boolean):void { _bitmap.smoothing = value; }
 		
 		/**
 		 * Width of the screen.
@@ -231,7 +226,7 @@
 		
 		// Screen infromation.
 		/** @private */ private var _sprite:Sprite = new Sprite;
-		/** @private */ private var _bitmap:Vector.<Bitmap> = new Vector.<Bitmap>(2);
+		/** @private */ private var _bitmap:Bitmap; // Vector.<Bitmap> = new Vector.<Bitmap>(2);
 		/** @private */ private var _current:int = 0;
 		/** @private */ private var _matrix:Matrix = new Matrix;
 		/** @private */ private var _x:int;
