@@ -17,6 +17,9 @@ package net.flashpunk.ext
 		private var myText:Text;
 		private var myGfx:Graphiclist;
 		
+		public function get text():Text { return myText; }
+		public function set click(value:Function):void { onClick = value; }
+		
 		public function ReactiveText(caption:String, clickHandler:Function = null, xPos:Number = 0, yPos:Number = 0, width:int = 0, height:int = 0, fgColor:uint = 0xFFFFFFFF) 
 		{
 			type = "ReactiveText";
@@ -71,6 +74,11 @@ package net.flashpunk.ext
 			myGfx.x -= width * 0.5;
 			myGfx.y -= height * 0.5;
 			graphic = myGfx;
+		}
+		
+		public function removeBloom():void
+		{
+			if (myGfx.count == 2) { myGfx.children.shift(); }
 		}
 		
 		public function disable():void 
