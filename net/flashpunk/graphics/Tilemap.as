@@ -106,6 +106,37 @@
 		}
 		
 		/**
+		 * gets a Vector of tile index values for all tiles surrounding the specified position
+		 * @param	column tile column
+		 * @param	row tile row
+		 * @param	includeSelf appends the tile index for the specified position to the vector
+		 * @return Vector of tile index values
+		 */
+		public function getTileNeighbors(column:uint, row:uint, includeSelf:Boolean = false):Vector.<uint>
+		{
+			var neighbors:Vector.<uint> = new Vector.<uint>();
+			
+			neighbors.push(
+				getTile(column - 1, row - 1),
+				getTile(column, row - 1),
+				getTile(column + 1, row - 1),
+				
+				getTile(column - 1, row),
+				getTile(column + 1, row),
+				
+				getTile(column - 1, row + 1),
+				getTile(column, row + 1),
+				getTile(column + 1, row + 1)
+				);
+			if (includeSelf)
+			{
+				neighbors.push(getTile(column, row));
+			}
+			
+			return neighbors;
+		}
+		
+		/**
 		 * Sets a region of tiles to the index.
 		 * @param	column		First tile column.
 		 * @param	row			First tile row.
