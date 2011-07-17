@@ -116,18 +116,154 @@
 		{
 			var neighbors:Vector.<uint> = new Vector.<uint>();
 			
-			neighbors.push(
-				getTile(column - 1, row - 1),
-				getTile(column, row - 1),
-				getTile(column + 1, row - 1),
-				
-				getTile(column - 1, row),
-				getTile(column + 1, row),
-				
-				getTile(column - 1, row + 1),
-				getTile(column, row + 1),
-				getTile(column + 1, row + 1)
-				);
+			var topRow:uint = 0, bottomRow:uint = _rows - 1, leftColumn:uint = 0, rightColumn:uint = _columns - 1;
+			
+			// handle top row
+			if (row == topRow)
+			{
+				// special case 1 - upper-left corner of the map
+				// T - target tile N - neighbor
+				// [T][N][ ]
+				// [N][N][ ]
+				// [ ][ ][ ]
+				//
+				if (column == leftColumn) 
+				{ 
+					neighbors.push(
+						getTile(column + 1, row),
+						getTile(column, row + 1),
+						getTile(column + 1, row + 1)
+					);
+				}
+				// special case 2 - upper-right corner of the map
+				// T - target tile N - neighbor
+				// [ ][N][T]
+				// [ ][N][N]
+				// [ ][ ][ ]
+				else if (column == rightColumn) 
+				{ 
+					neighbors.push(
+						getTile(column - 1, row),
+						getTile(column - 1, row + 1),
+						getTile(column, row + 1)
+					);
+				}
+				// special case 3 - top edge of the map
+				// T - target tile N - neighbor
+				// [N][T][N]
+				// [N][N][N]
+				// [ ][ ][ ]
+				else
+				{
+					neighbors.push(
+						getTile(column - 1, row),
+						getTile(column + 1, row),
+						getTile(column - 1, row + 1),
+						getTile(column, row + 1),
+						getTile(column + 1, row + 1)
+					);
+				}
+			}
+			// handle bottom row
+			else if (row == bottomRow)
+			{
+				// special case 4 - lower-left corner of the map
+				// T - target tile N - neighbor
+				// [ ][ ][ ]
+				// [N][N][ ]
+				// [T][N][ ]
+				if (column == leftColumn) 
+				{ 
+					neighbors.push(
+						getTile(column, row - 1),
+						getTile(column + 1, row - 1),
+						getTile(column + 1, row)
+					);
+				}
+				// special case 5 - lower-right corner of the map
+				// T - target tile N - neighbor
+				// [ ][ ][ ]
+				// [ ][N][N]
+				// [ ][N][T]
+				else if (column == rightColumn) 
+				{ 
+					neighbors.push(
+						getTile(column - 1, row - 1),
+						getTile(column, row - 1),
+						getTile(column - 1, row)
+					);
+				}
+				// special case 6 - bottom edge of the map
+				// T - target tile N - neighbor
+				// [ ][ ][ ]
+				// [N][N][N]
+				// [N][T][N]
+				else
+				{
+					neighbors.push(
+						getTile(column - 1, row - 1),
+						getTile(column, row - 1),
+						getTile(column + 1, row - 1),
+						getTile(column - 1, row),
+						getTile(column + 1, row)
+					);
+				}
+			}
+			// handle central rows
+			else
+			{
+				// special case 7 - left edge of the map
+				// T - target tile N - neighbor
+				// [N][N][ ]
+				// [T][N][ ]
+				// [N][N][ ]
+				if (column == leftColumn) 
+				{ 
+					neighbors.push(
+						getTile(column, row - 1),
+						getTile(column + 1, row - 1),
+						getTile(column + 1, row),
+						getTile(column, row + 1),
+						getTile(column + 1, row + 1)
+					);
+				}
+				// special case 8 - right edge of the map
+				// T - target tile N - neighbor
+				// [ ][N][N]
+				// [ ][N][T]
+				// [ ][N][N]
+				else if (column == rightColumn) 
+				{ 
+					neighbors.push(
+						getTile(column - 1, row - 1),
+						getTile(column, row - 1),
+						getTile(column - 1, row),
+						getTile(column - 1, row + 1),
+						getTile(column, row + 1)
+					);
+				}
+				// common case - any central positions
+				// T - target tile N - neighbor
+				// [N][N][N]
+				// [N][T][N]
+				// [N][N][N]
+				else
+				{
+					neighbors.push(
+						getTile(column - 1, row - 1),
+						getTile(column, row - 1),
+						getTile(column + 1, row - 1),
+
+						getTile(column - 1, row),
+						getTile(column + 1, row),
+
+						getTile(column - 1, row + 1),
+						getTile(column, row + 1),
+						getTile(column + 1, row + 1)
+					);
+				}
+			}
+			
 			if (includeSelf)
 			{
 				neighbors.push(getTile(column, row));
