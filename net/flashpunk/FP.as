@@ -67,6 +67,26 @@
 			return s;
 		}
 		
+		/**
+		 * @author Richard Marks
+		 * returns a string of the specified number padded with any character
+		 * @param	number - number to pad
+		 * @param	width - how many zeroes
+		 * @param   padChar - character to pad the string with
+		 * @return a string of the specified number padded with any character
+		 */
+		static public function padNumber(number:int, width:int, padChar:String = null):String 
+		{
+			var pc:String = (padChar == null) ? " " : padChar.charAt(0);
+			
+			var s:String = "" + number;
+			while (s.length < width)
+			{
+				s = pc + s;
+			}
+			return s;
+		}
+		
 		static public function formatTime(time:Number):String
 		{
 			//Create variables for function

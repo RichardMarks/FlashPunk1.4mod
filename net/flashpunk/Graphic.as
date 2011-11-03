@@ -18,6 +18,8 @@
 		 */
 		public var visible:Boolean = true;
 		
+		public var tag:String = "";
+		
 		/**
 		 * X offset.
 		 */

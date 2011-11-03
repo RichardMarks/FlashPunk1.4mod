@@ -134,6 +134,11 @@
 			}
 		}
 		
+		public function hackyRemoval():void
+		{
+			_world = null;
+		}
+		
 		/**
 		 * Checks for a collision against an Entity type.
 		 * @param	type		The Entity type to check for.

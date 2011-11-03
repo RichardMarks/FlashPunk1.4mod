@@ -113,6 +113,36 @@
 			stage.displayState = StageDisplayState.NORMAL;
 		}
 		
+		// Android pause/resume handler
+		public function droidPause():void
+		{
+			if (FP.fixed)
+			{
+				// stop all timers
+				_timer.stop();
+			}
+			else
+			{
+				// remove all event listeners
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+		}
+		
+		public function droidResume():void
+		{
+			if (FP.fixed)
+			{
+				// resume all timers
+				_timer.addEventListener(TimerEvent.TIMER, onTimer);
+				_timer.start();
+			}
+			else
+			{
+				// re-add all event listeners
+				addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			}
+		}
+		
 		/** @private Event handler for stage entry. */
 		private function onStage(e:Event = null):void
 		{

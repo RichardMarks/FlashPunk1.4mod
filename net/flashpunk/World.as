@@ -109,7 +109,11 @@
 		 */
 		public function add(e:Entity):Entity
 		{
-			if (e._world) return e;
+			if (e._world)
+			{
+				trace("FlashPunk: add() Entity Already Exists In World");
+				return e;
+			}
 			_add[_add.length] = e;
 			e._world = this;
 			return e;

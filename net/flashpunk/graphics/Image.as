@@ -293,6 +293,13 @@
 		
 		/** @private Source BitmapData image. */
 		public function get source():BitmapData { return _source; }
+		public function set source(value:BitmapData):void
+		{
+			_source = value;
+			_sourceRect = _source.rect;
+			createBuffer();
+			updateBuffer();
+		}
 		
 		// Source and buffer information.
 		/** @private */ protected var _source:BitmapData;
